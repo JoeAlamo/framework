@@ -15,6 +15,9 @@ storage/
 # Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
 .rocketeer/
 
+# IDE files
+.idea/
+
 # =========================
 # Operating System Files
 # =========================

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Core\Controllers\Controller;
+use Core\Views\View;
 
 /**
  * Created by PhpStorm.
@@ -18,6 +19,11 @@ class ExampleController extends Controller
         echo "<p> _GET ARRAY: <pre>" . print_r($_GET, true) . "</pre></p>";
         echo "<p> _POST ARRAY: <pre>" . print_r($_POST, true) . "</pre></p>";
         echo "<p> ROUTE PARAMETERS: <pre>" . print_r($this->routeParameters, true) . "</pre></p>";
+    }
+
+    public function exampleViewAction()
+    {
+        View::render('Example/example.php');
     }
 
     protected function before()

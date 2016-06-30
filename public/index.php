@@ -6,9 +6,19 @@
  * Time: 13:33
  */
 
-require "../core/Routing/Router.php";
+/**
+ * Autoloader
+ */
 
-$router = new Router();
+spl_autoload_register(function ($class) {
+    $root = dirname(__DIR__);
+    $file = $root . '/' . str_replace('\\', '/', $class) . '.php';
+    if (is_readable($file)) {
+        require $file;
+    }
+});
+
+$router = new \Core\Routing\Router();
 
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('posts', ['controller' => 'Posts', 'action' => 'index']);

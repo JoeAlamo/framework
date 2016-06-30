@@ -1,5 +1,7 @@
 <?php
 
+namespace Core\Routing;
+
 /**
  * Maintains application routes
  * User: Joe Alamo
@@ -80,7 +82,7 @@ class Router
             die("No route matched");
         }
 
-        $controller = $this->convertToStudlyCaps($this->params['controller']);
+        $controller = 'App\Controllers\\' . $this->convertToStudlyCaps($this->params['controller']);
 
         if (!class_exists($controller)) {
             die("Controller class $controller not found");

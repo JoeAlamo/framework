@@ -23,7 +23,9 @@ class ExampleController extends Controller
 
     public function exampleViewAction()
     {
-        View::render('Example/example.php');
+        View::render('Example/example.php', [
+            'routeParameters' => $this->routeParameters
+        ]);
     }
 
     protected function before()

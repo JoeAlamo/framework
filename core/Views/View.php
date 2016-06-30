@@ -13,16 +13,19 @@ class View
 {
     /**
      * Render the given view file
-     * @param string $view
+     * @param string $_view
+     * @param array $_data
      */
-    public static function render(string $view)
+    public static function render(string $_view, array $_data = [])
     {
-        $file = "../app/Views/$view";
+        $_file = "../app/Views/$_view";
 
-        if (!is_readable($file)) {
-            die("The view $file can't be found");
+        if (!is_readable($_file)) {
+            die("The view $_file can't be found");
         }
 
-        require $file;
+        extract($_data, EXTR_SKIP);
+
+        require $_file;
     }
 }

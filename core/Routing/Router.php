@@ -78,18 +78,19 @@ class Router
      */
     public function dispatch(string $url)
     {
+        $url = $this->removeQueryStringVariables($url);
         if (!$this->match($url)) {
             die("No route matched");
         }
 
-        $controller = 'App\Controllers\\' . $this->convertToStudlyCaps($this->params['controller']);
+        $controller = 'App\Controllers\\' . $this->convertToStudlyCaps($this->getParams()['controller']);
 
         if (!class_exists($controller)) {
             die("Controller class $controller not found");
         }
 
-        $controllerObj = new $controller();
-        $action = $this->convertToCamelCase($this->params['action']);
+        $controllerObj = new $controller($this->getParams());
+        $action = $this->convertToCamelCase($this->getParams()['action']);
 
         if (!is_callable([$controllerObj, $action])) {
             die("Method $action (in controller $controller) not found or not public");
@@ -114,6 +115,28 @@ class Router
     public function getParams()
     {
         return $this->params;
+    }
+
+    /**
+     * If any query string params are present (&this=1&that=2), remove them.
+     * Note that server URL rewriting will change first ? of query string into &
+     * @param string $url
+     * @return string
+     */
+    protected function removeQueryStringVariables(string $url): string
+    {
+        if ($url !== '') {
+            // Split URL into 2 parts, first containing route, second containing any query parameters
+            $parts = explode('&', $url, 2);
+
+            if (strpos($parts[0], '=') === false) {
+                $url = $parts[0];
+            } else {
+                $url = '';
+            }
+        }
+
+        return $url;
     }
 
     /**

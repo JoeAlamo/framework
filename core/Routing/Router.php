@@ -83,7 +83,7 @@ class Router
             die("No route matched");
         }
 
-        $controller = 'App\Controllers\\' . $this->convertToStudlyCaps($this->getParams()['controller']);
+        $controller = $this->getNamespace() . $this->convertToStudlyCaps($this->getParams()['controller']);
 
         if (!class_exists($controller)) {
             die("Controller class $controller not found");
@@ -137,6 +137,21 @@ class Router
         }
 
         return $url;
+    }
+
+    /**
+     * Get namespace for the controller class. The namespace defined in route options is appended if present.
+     * @return string
+     */
+    protected function getNamespace(): string
+    {
+        $namespace = 'App\Controllers\\';
+
+        if (array_key_exists('namespace', $this->getParams())) {
+            $namespace .= $this->getParams()['namespace'] . '\\';
+        }
+
+        return $namespace;
     }
 
     /**

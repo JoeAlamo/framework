@@ -13,5 +13,6 @@ return [
         'user' => getenv('DB_USER') ? getenv('DB_USER') : 'user',
         'password' => getenv('DB_PASSWORD') ? getenv('DB_PASSWORD') : 'password'
     ],
-    'env' => getenv('APP_ENV') ? getenv('APP_ENV') : 'dev'
+    'env' => getenv('APP_ENV') ? getenv('APP_ENV') : 'dev',
+    'debug' => true
 ];

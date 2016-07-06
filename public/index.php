@@ -21,6 +21,7 @@ define('CORE', ROOT . 'core' . DIRECTORY_SEPARATOR);
 /**
  * Error and exception handling
  */
+error_reporting(E_ALL);
 set_exception_handler('Core\Exceptions\Handler::handleException');
 
 $router = new \Core\Routing\Router();

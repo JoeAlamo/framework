@@ -24,13 +24,14 @@ class View
      * Render the given view file
      * @param string $_view
      * @param array $_data
+     * @throws \Exception
      */
     public static function renderFile(string $_view, array $_data = [])
     {
         $_file = static::$viewPaths[0] . "/$_view";
 
         if (!is_readable($_file)) {
-            die("The view $_file can't be found");
+            throw new \Exception("The view $_file can't be found");
         }
 
         extract($_data, EXTR_SKIP);

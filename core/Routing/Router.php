@@ -74,26 +74,29 @@ class Router
      *
      * @param string $url The route URL
      *
+     * @throws \Exception
+     * @throws \BadMethodCallException
+     *
      * @return void
      */
     public function dispatch(string $url)
     {
         $url = $this->removeQueryStringVariables($url);
         if (!$this->match($url)) {
-            die("No route matched");
+            throw new \Exception('No route matched');
         }
 
         $controller = $this->getNamespace() . $this->convertToStudlyCaps($this->getParams()['controller']);
 
         if (!class_exists($controller)) {
-            die("Controller class $controller not found");
+            throw new \Exception("Controller class $controller not found");
         }
 
         $controllerObj = new $controller($this->getParams());
         $action = $this->convertToCamelCase($this->getParams()['action']);
 
         if (!is_callable([$controllerObj, $action])) {
-            die("Method $action (in controller $controller) not found or not public");
+            throw new \BadMethodCallException("Method $action (in controller $controller) not found or not public");
         }
 
         $controllerObj->$action();

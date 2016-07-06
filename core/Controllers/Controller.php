@@ -23,13 +23,14 @@ abstract class Controller
      * Call any before filters, then the action, then any after filters.
      * @param string $name
      * @param array $args
+     * @throws \BadMethodCallException
      */
     public function __call(string $name, array $args)
     {
         $method = "{$name}Action";
 
         if (!method_exists($this, $method)) {
-            die("Method $method not found in controller" . get_class($this));
+            throw new \BadMethodCallException("Method $method not found in controller " . get_class($this));
         }
 
         if ($this->before() !== false) {

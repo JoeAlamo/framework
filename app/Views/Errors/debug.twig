@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Error</title>
+</head>
+<body>
+    <h1>An error has occurred</h1>
+    <p>Uncaught exception: {{ exception }}</p>
+    <p>Message: {{ message }}</p>
+    <p>Stack trace:</p> <pre>{{ stackTrace }}</pre>
+    <p>Thrown in {{ file }} on line {{ line }}</p>
+</body>
+</html>

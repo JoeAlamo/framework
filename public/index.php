@@ -11,6 +11,13 @@
  */
 require '../vendor/autoload.php';
 
+/**
+ * Path definitions
+ */
+define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
+define('APP', ROOT . 'app' . DIRECTORY_SEPARATOR);
+define('CORE', ROOT . 'core' . DIRECTORY_SEPARATOR);
+
 $router = new \Core\Routing\Router();
 
 $router->add('', ['controller' => 'Home', 'action' => 'index']);

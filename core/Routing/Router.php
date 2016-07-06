@@ -103,7 +103,7 @@ class Router
      * Retrieve routing table
      * @return array
      */
-    public function getRoutes()
+    public function getRoutes(): array
     {
         return $this->routes;
     }
@@ -112,7 +112,7 @@ class Router
      * Retrieve currently matched parameters
      * @return array
      */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }

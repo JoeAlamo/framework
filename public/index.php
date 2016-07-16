@@ -6,6 +6,8 @@
  * Time: 13:33
  */
 
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Composer
  */
@@ -24,7 +26,13 @@ define('CORE', ROOT . 'core' . DIRECTORY_SEPARATOR);
 error_reporting(E_ALL);
 set_exception_handler('Core\Exceptions\Handler::handleException');
 
+/**
+ * Bootstrap the application.
+ * Receive the request, load up the routes, handle the request
+ */
+
+$request = Request::createFromGlobals();
 
 require APP . 'routes.php';
 
-$router->dispatch($_SERVER['QUERY_STRING']);
+$router->dispatch($request);

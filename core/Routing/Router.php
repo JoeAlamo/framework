@@ -2,6 +2,9 @@
 
 namespace Core\Routing;
 
+use Symfony\Component\HttpFoundation\Request;
+use Core\Helpers\Str;
+
 /**
  * Maintains application routes
  * User: Joe Alamo
@@ -72,28 +75,28 @@ class Router
      * Dispatch the route, creating the controller object and running the
      * action method
      *
-     * @param string $url The route URL
+     * @param Request $request Symfony HTTPFoundation request
      *
      * @throws \Exception
      * @throws \BadMethodCallException
      *
      * @return void
      */
-    public function dispatch(string $url)
+    public function dispatch(Request $request)
     {
-        $url = $this->removeQueryStringVariables($url);
+        $url = $request->getPathInfo();
         if (!$this->match($url)) {
             throw new \Exception('No route matched');
         }
 
-        $controller = $this->getNamespace() . $this->convertToStudlyCaps($this->getParams()['controller']);
+        $controller = $this->getNamespace() . Str::convertToStudlyCaps($this->getParams()['controller']);
 
         if (!class_exists($controller)) {
             throw new \Exception("Controller class $controller not found");
         }
 
         $controllerObj = new $controller($this->getParams());
-        $action = $this->convertToCamelCase($this->getParams()['action']);
+        $action = Str::convertToCamelCase($this->getParams()['action']);
 
         if (!is_callable([$controllerObj, $action])) {
             throw new \BadMethodCallException("Method $action (in controller $controller) not found or not public");
@@ -121,28 +124,6 @@ class Router
     }
 
     /**
-     * If any query string params are present (&this=1&that=2), remove them.
-     * Note that server URL rewriting will change first ? of query string into &
-     * @param string $url
-     * @return string
-     */
-    protected function removeQueryStringVariables(string $url): string
-    {
-        if ($url !== '') {
-            // Split URL into 2 parts, first containing route, second containing any query parameters
-            $parts = explode('&', $url, 2);
-
-            if (strpos($parts[0], '=') === false) {
-                $url = $parts[0];
-            } else {
-                $url = '';
-            }
-        }
-
-        return $url;
-    }
-
-    /**
      * Get namespace for the controller class. The namespace defined in route options is appended if present.
      * @return string
      */
@@ -157,29 +138,4 @@ class Router
         return $namespace;
     }
 
-    /**
-     * Convert the string with hyphens to StudlyCaps,
-     * e.g. post-authors => PostAuthors
-     *
-     * @param string $string The string to convert
-     *
-     * @return string
-     */
-    protected function convertToStudlyCaps(string $string): string
-    {
-        return str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
-    }
-
-    /**
-     * Convert the string with hyphens to camelCase,
-     * e.g. add-new => addNew
-     *
-     * @param string $string The string to convert
-     *
-     * @return string
-     */
-    protected function convertToCamelCase(string $string): string
-    {
-        return lcfirst($this->convertToStudlyCaps($string));
-    }
 }

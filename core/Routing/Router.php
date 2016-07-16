@@ -95,7 +95,7 @@ class Router
             throw new \Exception("Controller class $controller not found");
         }
 
-        $controllerObj = new $controller($this->getParams());
+        $controllerObj = new $controller($request, $this->getParams());
         $action = Str::convertToCamelCase($this->getParams()['action']);
 
         if (!is_callable([$controllerObj, $action])) {

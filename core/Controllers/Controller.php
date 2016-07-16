@@ -9,12 +9,16 @@
 namespace Core\Controllers;
 
 
+use Symfony\Component\HttpFoundation\Request;
+
 abstract class Controller
 {
+    protected $request;
     protected $routeParameters = [];
 
-    public function __construct(array $routeParameters)
+    public function __construct(Request $request, array $routeParameters)
     {
+        $this->request = $request;
         $this->routeParameters = $routeParameters;
     }
 

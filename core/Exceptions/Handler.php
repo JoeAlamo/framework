@@ -11,6 +11,7 @@ namespace Core\Exceptions;
 
 use Core\Config;
 use Core\Views\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class Handler
 {
@@ -19,18 +20,20 @@ class Handler
         static::log($e);
 
         if (Config::get('debug')) {
-            View::render('Errors/debugOn.twig', [
-                'exception' => get_class($e),
-                'message' => $e->getMessage(),
-                'stackTrace' => $e->getTraceAsString(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine()
-            ]);
+            (new Response(
+                View::render('Errors/debugOn.twig', [
+                    'exception' => get_class($e),
+                    'message' => $e->getMessage(),
+                    'stackTrace' => $e->getTraceAsString(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine()
+                ])
+            ))->send();
         } else {
-            View::render('Errors/debugOff.twig');
+            (new Response(
+                View::render('Errors/debugOff.twig')
+            ))->send();
         }
-
-        die();
     }
 
     protected static function log(\Throwable $e)

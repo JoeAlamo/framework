@@ -28,6 +28,7 @@ abstract class Controller
      * @param string $name
      * @param array $args
      * @throws \BadMethodCallException
+     * @return $response
      */
     public function __call(string $name, array $args)
     {
@@ -38,9 +39,11 @@ abstract class Controller
         }
 
         if ($this->before() !== false) {
-            call_user_func_array([$this, $method], $args);
+            $response = call_user_func_array([$this, $method], $args);
             $this->after();
         }
+
+        return $response ?? false;
     }
 
     /**

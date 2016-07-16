@@ -23,14 +23,14 @@ class ExampleController extends Controller
 
     public function exampleViewAction()
     {
-        View::renderFile('Example/example.php', [
+        return View::renderFile('Example/example.php', [
             'routeParameters' => $this->routeParameters
         ]);
     }
 
     public function exampleTwigViewAction()
     {
-        View::render('Example/example.twig', [
+        return View::render('Example/example.twig', [
            'routeParameters' => $this->routeParameters
         ]);
     }

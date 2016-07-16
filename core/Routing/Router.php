@@ -4,6 +4,7 @@ namespace Core\Routing;
 
 use Symfony\Component\HttpFoundation\Request;
 use Core\Helpers\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Maintains application routes
@@ -80,9 +81,9 @@ class Router
      * @throws \Exception
      * @throws \BadMethodCallException
      *
-     * @return void
+     * @return Response
      */
-    public function dispatch(Request $request)
+    public function dispatch(Request $request): Response
     {
         $url = $request->getPathInfo();
         if (!$this->match($url)) {
@@ -102,7 +103,9 @@ class Router
             throw new \BadMethodCallException("Method $action (in controller $controller) not found or not public");
         }
 
-        $controllerObj->$action();
+        $response = $controllerObj->$action();
+
+        return $response instanceof Response ? $response : new Response($response);
     }
 
     /**

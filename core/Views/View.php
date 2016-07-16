@@ -8,16 +8,15 @@
 
 namespace Core\Views;
 
-
 class View
 {
     protected static $viewPaths = [
         '../app/Views',
     ];
 
-    public static function render(string $template, array $data = [])
+    public static function render(string $template, array $data = []): string
     {
-        self::renderTemplate($template, $data);
+        return self::renderTemplate($template, $data);
     }
 
     /**
@@ -25,8 +24,9 @@ class View
      * @param string $_view
      * @param array $_data
      * @throws \Exception
+     * @return string
      */
-    public static function renderFile(string $_view, array $_data = [])
+    public static function renderFile(string $_view, array $_data = []): string
     {
         $_file = static::$viewPaths[0] . "/$_view";
 
@@ -36,15 +36,19 @@ class View
 
         extract($_data, EXTR_SKIP);
 
-        require $_file;
+        ob_start();
+        include $_file;
+
+        return ob_get_clean();
     }
 
     /**
      * Render the given view template using Twig
      * @param string $template
      * @param array $data
+     * @return string
      */
-    public static function renderTemplate(string $template, array $data = [])
+    public static function renderTemplate(string $template, array $data = []): string
     {
         static $twig = null;
 
@@ -53,6 +57,6 @@ class View
             $twig = new \Twig_Environment($loader);
         }
 
-        echo $twig->render($template, $data);
+        return $twig->render($template, $data);
     }
 }

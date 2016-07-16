@@ -35,4 +35,6 @@ $request = Request::createFromGlobals();
 
 require APP . 'routes.php';
 
-$router->dispatch($request);
+$response = $router->dispatch($request);
+
+$response->send();
